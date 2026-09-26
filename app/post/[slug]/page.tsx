@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { PublicChrome } from "@/components/PublicChrome";
+import { RichContent } from "@/components/RichContent";
 import { estimateReadingTime, formatPostDate } from "@/lib/format";
 import { getPublishedPostBySlug } from "@/lib/posts";
 
@@ -22,8 +23,6 @@ export default async function PostPage({ params }: Props) {
   const post = await getPublishedPostBySlug(slug);
   if (!post) notFound();
 
-  const paragraphs = post.content.split(/\n\s*\n/).filter(Boolean);
-
   return (
     <PublicChrome>
       <main className="article-wrap">
@@ -33,7 +32,7 @@ export default async function PostPage({ params }: Props) {
         {post.cover_image ? (
           <div className="article-cover"><Image src={post.cover_image} alt="" fill priority sizes="(max-width: 820px) 100vw, 780px" /></div>
         ) : null}
-        <div className="article-content">{paragraphs.map((paragraph, index) => <p key={index}>{paragraph}</p>)}</div>
+        <RichContent content={post.content} />
         <hr className="article-divider" />
         <div className="article-nav"><Link href="/writings">← Back to all writings</Link><Link href="/">Bell’s Diary →</Link></div>
       </main>

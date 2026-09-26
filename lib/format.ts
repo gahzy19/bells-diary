@@ -1,3 +1,5 @@
+import { contentToPlainText } from "@/lib/content";
+
 export function formatPostDate(value: string | null, compact = false) {
   if (!value) return "Not published";
 
@@ -9,7 +11,7 @@ export function formatPostDate(value: string | null, compact = false) {
 }
 
 export function estimateReadingTime(content: string) {
-  const words = content.trim().split(/\s+/).filter(Boolean).length;
+  const words = contentToPlainText(content).split(/\s+/).filter(Boolean).length;
   return Math.max(1, Math.ceil(words / 210));
 }
 

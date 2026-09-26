@@ -15,6 +15,8 @@ Migrasi lengkap dari static HTML ke Next.js + Supabase. Desain asli, foto Bell, 
 - Draft tidak dapat dibaca dari website public karena Row Level Security
 - Empty, loading, validation, dan error states
 - Mobile navigation dan admin table yang responsive
+- Rich text editor Tiptap: paragraph, H2/H3, bold, italic, lists, blockquote, link, undo/redo
+- Word counter, estimasi reading time, private draft preview, save status, dan unsaved-change warning
 
 Tanpa environment variables, public site otomatis memakai tiga tulisan bawaan sebagai preview. Admin baru aktif setelah Supabase disambungkan.
 
@@ -27,6 +29,27 @@ pnpm dev
 ```
 
 Buka `http://localhost:3000`.
+
+## Menguji Writing Experience V2
+
+1. Jalankan `pnpm dev`, login, lalu buka **New post** atau **Edit**.
+2. Coba paragraph, H2/H3, bold, italic, bullet/numbered list, blockquote, link, undo, dan redo.
+3. Pastikan word count dan estimasi reading time berubah saat mengetik.
+4. Klik **Preview** dan bandingkan hierarchy tulisan dengan halaman artikel public.
+5. Coba meninggalkan editor sebelum menyimpan; browser harus menampilkan peringatan.
+6. Simpan sebagai draft dan pastikan draft tidak muncul di website public.
+7. Publish, edit kembali, upload cover, lalu pastikan artikel public tetap tampil benar.
+8. Ulangi langkah penting dari iPhone Safari, termasuk membuka keyboard dan menggunakan toolbar.
+
+Validasi kode:
+
+```bash
+pnpm lint
+pnpm typecheck
+pnpm build
+```
+
+Writing Experience V2 tidak mengubah schema database. Kolom `content` tetap bertipe `text`. Artikel lama berbentuk plain text tetap dirender dan dapat diedit; saat disimpan lewat editor baru, isinya dinormalisasi menjadi Tiptap JSON yang sudah dibatasi ke node dan mark yang didukung. Public article dan preview merender JSON sebagai elemen React terkontrol—bukan raw HTML—sehingga tidak memerlukan migration SQL baru.
 
 ## Setup Supabase satu kali
 

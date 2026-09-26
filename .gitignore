@@ -1,5 +1,6 @@
 node_modules
 .next
+Git/
 .env
 .env.local
 .vercel
